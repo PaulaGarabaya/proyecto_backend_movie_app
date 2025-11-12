@@ -1,0 +1,27 @@
+{
+  "name": "demo_server",
+  "version": "1.0.0",
+  "description": "Mi primer servidor con Node",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Alejandro Reyes",
+  "license": "ISC",
+  "dependencies": {
+    "cowsay": "^1.6.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.3",
+    "pg": "^8.16.3",
+    "pug": "^3.0.3"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4"
+  }
+}
