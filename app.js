@@ -1,6 +1,9 @@
 const express = require("express"); // Importando express
 const cowsay = require("cowsay");
 
+const connectDB = require("./config/db_mongo");
+const Film = require("./models/films.model");
+
 const app = express(); // Creando el servidor
 const port = 3000; // Puerto de pruebas
 
