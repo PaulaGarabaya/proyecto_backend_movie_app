@@ -9,9 +9,15 @@ const Film = require("./models/films.model");
 // Importar rutas
 const viewsRoutes = require("./routes/viewsRoutes");
 const favoritesRoutes = require("./routes/favoritesRoutes"); 
+const userRoutes = require("./routes/userRoutes");
 
 const app = express(); // Creando el servidor
 const port = 3000; // Puerto de pruebas
+ 
+const path = require("path");
+
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
 
 // Leer fichero .env
 require('dotenv').config();
@@ -35,6 +41,7 @@ app.use(cookieParser());
 // Usar rutas
 app.use('/', viewsRoutes);
 app.use('/', favoritesRoutes); 
+app.use('/', userRoutes); 
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
