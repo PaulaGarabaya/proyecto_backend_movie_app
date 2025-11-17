@@ -12,7 +12,8 @@ const router = express.Router();
 
 //------------- WEB -------------
 // [GET] http://localhost:3000/favorites - Vista de favoritos
-router.get('/favorites', isAuthenticated, getFavoritesView);
+router.
+get('/favorites', authMiddleware, getFavoritesView);
 
 // -------------API--------------
 // [GET] http://localhost:3000/api/favorites - Obtener películas favoritas

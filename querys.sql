@@ -27,4 +27,9 @@ VALUES ('carlos', 'gomez', 'admin@example.com', '123abc', 'admin');
 INSERT INTO favorite_films (id_user, film_id)
 VALUES (1, '507f1f77bcf86cd799439011');
 
+-- Añadir logado a la tabla users
+ALTER TABLE users
+ADD COLUMN logado BOOLEAN NOT NULL DEFAULT FALSE;
+
+
     */
