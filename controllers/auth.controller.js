@@ -1,4 +1,5 @@
-const { createUser } = require("../models/user.model");
+const createUser  = require("../models/user.model");
+const queries = require("../queries/users.queries")
 
 // POST http://localhost:3000/api/signup
 const signup = async (req, res) => {
@@ -11,7 +12,7 @@ const signup = async (req, res) => {
             return res.status(400).json({ message: "Todos los campos son obligatorios"});
         }
 
-        const user = await createUser(name, surname, email, password, role);
+        const user = await queries(name, surname, email, password, role);
         // res.redirect('/login')
         // res.status(201).json({ message: "Usuario creado", user });
         
