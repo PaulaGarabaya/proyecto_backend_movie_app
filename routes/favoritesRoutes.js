@@ -1,3 +1,4 @@
+// favoritesRoutes.js MODIFICADO
 const express = require('express');
 const { 
     getFavoritesView, 
@@ -5,7 +6,7 @@ const {
     addFavorite, 
     removeFavorite 
 } = require('../controllers/favoritesController');
-const authMiddleware = require('../middlewares/authMiddleware'); 
+const { isAuthenticated } = require('../middlewares/authMiddleware'); // ← CORREGIDO
 
 const router = express.Router();
 
@@ -16,12 +17,12 @@ get('/favorites', authMiddleware, getFavoritesView);
 
 // -------------API--------------
 // [GET] http://localhost:3000/api/favorites - Obtener películas favoritas
-router.get('/api/favorites', authMiddleware, getFavorites);
+router.get('/api/favorites', isAuthenticated, getFavorites);
 
 // [POST] http://localhost:3000/api/favorites - Añadir favorito
-router.post('/api/favorites', authMiddleware, addFavorite);
+router.post('/api/favorites', isAuthenticated, addFavorite);
 
 // [DELETE] http://localhost:3000/api/favorites/:id - Eliminar favorito
-router.delete('/api/favorites/:id', authMiddleware, removeFavorite);
+router.delete('/api/favorites/:id', isAuthenticated, removeFavorite);
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const express = require("express"); // Importando express
 const cowsay = require("cowsay");
+const cookieParser = require('cookie-parser');
+
 
 const connectDB = require("./config/db_mongo");
 const Film = require("./models/films.model");
@@ -27,13 +29,15 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.static('public')); // Para servir archivos estáticos del front CSS, JS, assets
 
+// Y en los middlewares, agrega:
+app.use(cookieParser());
 
 // Usar rutas
 app.use('/', viewsRoutes);
 app.use('/', favoritesRoutes); 
 
 // Manejo de rutas no encontradas
-app.use('*', (req, res) => {
+app.use((req, res) => {
   res.status(404).json({ 
     error: 'Ruta no encontrada',
     message: `La ruta ${req.originalUrl} no existe en este servidor` 
