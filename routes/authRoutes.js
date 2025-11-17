@@ -12,7 +12,7 @@ const userController = require("../controllers/auth.controller");
 //[POST] http://localhost:3000/api/signup Registrar usuario en la aplicación
 router.post('/api/signup', userController.signup);
 //[POST] http://localhost:3000/api/login Hacer login en la aplicación
-router.post('/api/login', userController.login);
+// router.post('/api/login', userController.login);
 //[POST] http://localhost:3000/api/logout Salir
 // router.post('/api/logout');
 //[GET] http://localhost:3000/api/recoverpassword Recuperar password

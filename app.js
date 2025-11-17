@@ -14,10 +14,6 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.static('public')); // Para servir archivos estáticos del front CSS, JS, assets
 
-// Rutas
-const authRoutes = require("./routes/authRoutes");
-app.use("/", authRoutes);
-
 // Middlewares
 // const error404 = require("./middlewares/error404");
 // Morgan
