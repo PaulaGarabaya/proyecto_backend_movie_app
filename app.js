@@ -8,7 +8,8 @@ const Movie = require("./models/films.model");
 const app = express();
 const port = 3000;
 
-require('dotenv').config();
+require("dotenv").config();
+
 
 // Habilitar recepción de JSON por mi backend
 // Parsear el body entrante a JSON
