@@ -10,6 +10,11 @@ const port = 3000;
 
 require('dotenv').config();
 
+// Habilitar recepción de JSON por mi backend
+// Parsear el body entrante a JSON
+app.use(express.json());
+app.use(express.static('public')); // Para servir archivos estáticos del front CSS, JS, assets
+
 // Middlewares
 app.use(cookieParser());
 const error404 = require("./middlewares/error404");
