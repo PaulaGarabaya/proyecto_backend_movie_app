@@ -5,8 +5,13 @@ const express = require('express');
 
 const router = express.Router();
 //------------- WEB -------------
+<<<<<<< Updated upstream
 //[GET] http://localhost:3000/favorites 
 router.get('/favorites');
+=======
+// [GET] http://localhost:3000/favorites - Vista de favoritos
+router.get('/favorites', isAuthenticated, getFavoritesView);
+>>>>>>> Stashed changes
 
 // -------------API--------------
 //[GET] http://localhost:3000/api/favorites Obtener películas favoritas del usuario
