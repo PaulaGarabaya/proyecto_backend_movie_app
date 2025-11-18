@@ -6,11 +6,6 @@ const cookieParser = require('cookie-parser');
 // Leer fichero .env
 require('dotenv').config();
 
-const cookieParser = require('cookie-parser');
-
-
-const connectDB = require("./config/db_mongo");
-const connectDB = require("./config/db_mongo");
 const Movie = require("./models/films.model");  
 
 // Importar rutas
