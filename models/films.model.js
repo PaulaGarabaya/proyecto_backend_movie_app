@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 require('../config/db_mongo') // Conexión a BDD MongoDB
 >>>>>>> Stashed changes
+=======
+require('../config/db_mongo') // Conexión a BBDD MongoDB
+>>>>>>> d591f33461049e867ade7a0a42544e81dfcafed3
 
 // Crear Objeto
 const objectSchema = {

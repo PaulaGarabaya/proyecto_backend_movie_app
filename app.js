@@ -29,10 +29,12 @@ app.use(express.static('public')); // Para servir archivos estáticos del front 
 app.listen(port, () => {
   console.log(
     cowsay.say({
-      text: `Example app listening on port http://localhost:${port}`,
+      text: `Endpoint Proyecto Movie App http://localhost:${port}`,
       f: "owl", // Use the owl ASCII art // owl
     })
   );
 });
+
+connectDB(); // Conexión Mongo
 
 module.exports = app; // Exportar la app para usarla en tests
