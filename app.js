@@ -47,7 +47,7 @@ app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 app.use('/', viewsRoutes);
 app.use('/', favoritesRoutes); 
 app.use('/', userRoutes);  
-app.use('/', filmsRoutes);    
+app.use('/', filmsRoutes);
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
