@@ -1,10 +1,10 @@
 const express = require("express");
 const cowsay = require("cowsay");
 
-const connectDB = require("./config/db_mongo");
-const cookieParser = require('cookie-parser');
 // Leer fichero .env
 require('dotenv').config();
+const connectDB = require("./config/db_mongo");
+const cookieParser = require('cookie-parser');
 
 const Movie = require("./models/films.model");  
 
@@ -12,7 +12,8 @@ const Movie = require("./models/films.model");
 const viewsRoutes = require("./routes/viewsRoutes");
 const favoritesRoutes = require("./routes/favoritesRoutes"); 
 const userRoutes = require("./routes/userRoutes");
-const filmsRoutes = require("./routes/filmsRoutes");    
+const filmsRoutes = require("./routes/filmsRoutes"); 
+const authRoutes = require("./routes/authRoutes");   
 
 const app = express(); // Creando el servidor
 const port = 3000; // Puerto de pruebas
@@ -32,8 +33,6 @@ app.set("views", path.join(__dirname, "views"));
 // Configuración del logger con Morgan
 // app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 
-
-
 app.use(express.json());
 app.use(express.static('public')); // Para servir archivos estáticos del front CSS, JS, assets
 app.use(cookieParser());
@@ -47,7 +46,8 @@ app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 app.use('/', viewsRoutes);
 app.use('/', favoritesRoutes); 
 app.use('/', userRoutes);  
-app.use('/', filmsRoutes);
+app.use('/', filmsRoutes);    
+app.use('/', authRoutes);
 
 // Manejo de rutas no encontradas
 app.use((req, res) => {
