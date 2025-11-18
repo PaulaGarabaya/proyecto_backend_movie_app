@@ -1,4 +1,5 @@
 // const pool = require('../config/db_sql'); // Conexión a PostgreSQL
+
 //const queries = require('./queries'); // SQL queries definidas en otro archivo
 
 // GET /api/user -> Obtener usuario por id

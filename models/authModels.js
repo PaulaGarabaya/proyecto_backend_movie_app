@@ -1,4 +1,5 @@
 // const pool = require("../config/db_sql");
+
 const queries = require("../queries/users.queries");
 
 const createUser = async (name, surname, email, password, role = 'user') => {

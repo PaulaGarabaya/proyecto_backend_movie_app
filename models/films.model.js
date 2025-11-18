@@ -1,12 +1,5 @@
 const mongoose = require("mongoose");
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
 require('../config/db_mongo') // Conexión a BDD MongoDB
->>>>>>> Stashed changes
-=======
-require('../config/db_mongo') // Conexión a BBDD MongoDB
->>>>>>> d591f33461049e867ade7a0a42544e81dfcafed3
 
 // Crear Objeto
 const objectSchema = {
@@ -85,38 +78,6 @@ const filmsSchema = mongoose.Schema(objectSchema);
 // Crear Colección
 const Film = mongoose.model("Films", filmsSchema);
 
-// Documento de prueba
-<<<<<<< Updated upstream
-const film1 = new Film({
-    id_film: 10,
-    title: "Película Prueba 1",
-    image: "https://img.freepik.com/fotos-premium/palomitas-maiz-voladoras-gafas-3d-carrete-pelicula-tablilla-sobre-fondo-amarillo-concepto-pelicula-cine-3d_989822-1302.jpg?semt=ais_hybrid&w=740&q=80",
-    year: 2025,
-    director: "Inventado 1",
-    gender: "Masculino",
-    duration: "120 min",
-    sinopsis: "Sinopsis de prueba",
-    actors: "Actor 1, Actor 2",
-    ratings: [
-        {
-            source: "64c13ab08edf48a008793cac",
-            ref: "Sensacine",
-            value: "7/10", 
-            message: "Muy buena película",
-        },
-        {
-            source: "64c13ab18edf48a008793cad", 
-            ref: "FilmaFinitty",
-            value: "85%", 
-            message: "Mejor aún",
-        }
-    ]
-});
-
-film1.save()
-.then((data) => console.log(data))
-.catch(error => console.log(error))
-=======
 /* 
 const film1 = new Film({
   Title: "Guardians of the Galaxy Vol. 2",
@@ -153,6 +114,8 @@ film1.save()
 .then((data) => console.log(data))
 .catch(error => console.log(error))
 */
->>>>>>> Stashed changes
+/* film1.save()
+.then((data) => console.log(data))
+.catch(error => console.log(error)) */
 
 module.exports = Film;

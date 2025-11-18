@@ -1,28 +1,32 @@
-//Todo lo relacionado con peliculas
 const express = require('express');
-
 const router = express.Router();
+
+const movieAPI = require("../controllers/filmsController.js");
+const movieWeb = require("../controllers/filmsWebController.js");
+const Movie = require("../models/films.model");
+
 //------------- WEB -------------
-//[GET] http://localhost:3000/search 
-router.get('/search'); // Buscador
 
-//[GET] http://localhost:3000/search/:title
-router.get('/search/:title'); // Detalle
+router.get("/movies", async (req, res) => {
+  const movies = await Movie.find();
+  res.render("admin/movies", { movies });
+});
 
-//[GET] http://localhost:3000/movies 
-router.get('/movies'); // 
+// Vista web del detalle
+router.get("/search/:title", movieWeb.renderMovieDetail);
 
 // -------------API--------------
-//[GET] http://localhost:3000/api/movie/:title Buscar película o películas
-router.get('/api/movie/:title');
 
-//[POST] http://localhost:3000/api/movie Crear película (admin)
-router.post('/api/movie');
+// GET /api/movie/:title
+router.get("/:title", movieAPI.getMovieByTitle);
 
-//[PUT] http://localhost:3000/api/movie Editar película (admin)
-router.put('/api/movie/:id');
+// POST /api/movie
+router.post("/", movieAPI.createMovie);
 
-//[DELETE] http://localhost:3000/api/movie Borrar película (admin)
-router.delete('/api/movie/:id');
+// PUT /api/movie/:id
+router.put("/:id", movieAPI.updateMovie);
+
+// DELETE /api/movie/:id
+router.delete("/:id", movieAPI.deleteMovie);
 
 module.exports = router;
