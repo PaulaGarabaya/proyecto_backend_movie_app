@@ -4,7 +4,11 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const path = require("path");
+
+// Leer fichero .env
 require('dotenv').config();
+const connectDB = require("./config/db_mongo");
+const cookieParser = require('cookie-parser');
 
 // Importar configuración de Google Auth
 require('./config/authConfig');
@@ -16,8 +20,8 @@ const Movie = require("./models/films.model");
 const viewsRoutes = require("./routes/viewsRoutes");
 const favoritesRoutes = require("./routes/favoritesRoutes"); 
 const userRoutes = require("./routes/userRoutes");
-const filmsRoutes = require("./routes/filmsRoutes");
-const authRoutes = require('./routes/authRoutes');
+const filmsRoutes = require("./routes/filmsRoutes"); 
+const authRoutes = require("./routes/authRoutes");   
 
 // Importar middlewares
 const error404 = require("./middlewares/error404");
