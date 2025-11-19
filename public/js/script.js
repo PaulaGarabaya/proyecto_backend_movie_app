@@ -1,4 +1,4 @@
-// Cuando se hace click en el botón de búsqueda
+// BOTON BUSCAR PELICULAS 
 document.getElementById("searchButton").addEventListener("click", async () => {
     const title = document.getElementById("movieName").value.trim();
 
@@ -20,7 +20,7 @@ document.getElementById("searchButton").addEventListener("click", async () => {
                 <h2>${movie.Title}</h2>
                 <img src="${movie.Poster !== "N/A" ? movie.Poster : "/img/default.png"}" alt="${movie.Title}" class="img_logo">
                 <p><strong>Año:</strong> ${movie.Year || "Desconocido"}</p>
-                <a href="/search/${movie.Title}" class="btn-detalle">Ver detalle</a>
+                <a href="/movie/${movie.Title}" class="btn-detalle">Ver detalle</a>
             </article>
         `).join("");
 
@@ -31,6 +31,8 @@ document.getElementById("searchButton").addEventListener("click", async () => {
         document.getElementById("result").innerHTML = "<p>Ocurrió un error al buscar películas</p>";
     }
 });
+
+
 
 
 /*
