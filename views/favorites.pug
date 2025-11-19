@@ -117,14 +117,15 @@ block content
           
           //- BOTONES DE ACCIÓN PARA AUTENTICACIÓN
           .auth-actions
-            a.btn-secondary(href="/signup") Registrarse
+            a.btn-primary(href="/signup") Registrarse
+            a.btn-secondary(href="/api/login") Iniciar sesión
         
         //- SECCIÓN DE BENEFICIOS PARA MOTIVAR REGISTRO
         .benefits
           h3 ¿Por qué registrarte?  
           ul  
             li ✅ Guarda tus películas favoritas
-            li ✅ Recibe recomendaciones
+            li ✅ Recibe recomendaciones personalizadas
 
 
   //- MODAL/POPUP DE CONFIRMACIÓN (solo para usuarios logueados)
@@ -138,4 +139,4 @@ block content
         //- BOTONES DE ACCIÓN DEL MODAL
         .modal-actions
           button#confirmCancel.btn-secondary Cancelar  
-          button#confirmDelete.btn-danger Eliminar  
+          button#confirmDelete.btn-danger Eliminar

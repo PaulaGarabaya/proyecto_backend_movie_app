@@ -4,46 +4,25 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const path = require("path");
+const jwt = require('jsonwebtoken'); 
 
-// Leer fichero .env
+require('./config/googleAuthConfig'); 
 require('dotenv').config();
 const connectDB = require("./config/db_mongo");
-
-
-// Importar configuración de Google Auth
-require('./config/authConfig');
-
-// Importar modelos
-const Movie = require("./models/films.model");
-
-// Importar rutas
-const viewsRoutes = require("./routes/viewsRoutes");
-const favoritesRoutes = require("./routes/favoritesRoutes"); 
-const userRoutes = require("./routes/userRoutes");
-const filmsRoutes = require("./routes/filmsRoutes"); 
-const authRoutes = require("./routes/authRoutes");   
-
-// Importar middlewares
-const error404 = require("./middlewares/error404");
-const morgan = require("./middlewares/morgan");
-
 
 // ========================================================== INICIALIZACIÓN ==========================================================
 const app = express(); 
 const port = 3000;
 
 // ========================================================== CONFIGURACIÓN ==========================================================
-// Configuración de vistas 
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
 // ========================================================== MIDDLEWARES ==========================================================
-// Middlewares básicos de Express
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static('public'));
 app.use(cookieParser());
-
 
 // Session middleware
 app.use(session({ 
@@ -56,18 +35,38 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Morgan middleware
-app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
+// Middleware para JWT (AÑADIR ESTO)
+app.use((req, res, next) => {
+    const token = req.cookies.token;
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = decoded;
+        } catch (error) {
+            res.clearCookie('token');
+        }
+    }
+    next();
+});
+
+// Morgan middleware (si lo tienes)
+// app.use(morgan(':method :url :status :param[id] - :response-time ms :body'));
 
 // ========================================================== RUTAS ==========================================================
-app.use('/', viewsRoutes);
+// Importar rutas
+const viewsRoutes = require("./routes/viewsRoutes");
+const authRoutes = require("./routes/authRoutes");
+const favoritesRoutes = require("./routes/favoritesRoutes"); 
+const userRoutes = require("./routes/userRoutes");
+const filmsRoutes = require("./routes/filmsRoutes"); 
+
+app.use('/', viewsRoutes);    
+app.use('/', authRoutes);     
 app.use('/', favoritesRoutes); 
 app.use('/', userRoutes);  
 app.use('/', filmsRoutes);
-app.use('/', authRoutes);
 
 // ========================================================== MANEJO DE ERRORES ==========================================================
-// Manejo de rutas no encontradas
 app.use((req, res) => {
   res.status(404).json({ 
     error: 'Ruta no encontrada',
@@ -75,7 +74,6 @@ app.use((req, res) => {
   });
 });
 
-// Manejo de errores global
 app.use((error, req, res, next) => {
   console.error('Error global:', error);
   res.status(500).json({ 
@@ -89,13 +87,13 @@ connectDB().then(() => {
   app.listen(port, () => {
     console.log(
       cowsay.say({
-        text: `✅ Movie App funcionando en http://localhost:${port}`,
+        text: `Movie App funcionando en http://localhost:${port}`,
         f: "owl", 
       })
     );
   });
 }).catch(error => {
-  console.error('❌ Error conectando a MongoDB:', error);
+  console.error('Error conectando a MongoDB:', error);
 });
 
 module.exports = app;
