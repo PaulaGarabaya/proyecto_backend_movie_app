@@ -1,6 +1,6 @@
 const Film = require('../models/films.model');
 
-// Controlador "Página de inicio" ➡️ "homeController"
+// Controlador "Página de buscar peliculas"
 const homeController = async (req, res) => {
     try {
         const movies = await Film.find();
@@ -43,8 +43,27 @@ const dashboardController = async (req, res) => {
     }
 };
 
+// Controlador "Página detalle de peliculas"
+const detailController = async (req, res) => {
+    try {
+        const movies = await Film.find();
+        
+        res.render('search', {
+            title: 'Movie App - Inicio',
+            message: 'Bienvenido a nuestra aplicación de películas',
+            movies: movies
+        });
+    } catch (error) {
+        console.error('Error en homeController:', error);
+        res.status(500).render('error', {
+            title: 'Error',
+            message: 'Error al cargar la página de inicio'
+        });
+    }
+};
+
 module.exports = {
     homeController,
     dashboardController,
+    detailController
 };
-

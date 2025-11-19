@@ -10,6 +10,10 @@ const Film = require("../models/films.model"); //esto me trae el modelo especial
 // GET ALL FILMS /home/movie/:title
 router.get("/search/:title", movieWeb.getAllMovies);
 
+// GET pelcila en detalle
+router.get("/search/:title", movieWeb.renderMovieDetail);
+
+
 // -------------API--------------
 
 // GET /api/movie/:title en detalle

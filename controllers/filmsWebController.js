@@ -33,6 +33,36 @@ async function getAllMovies(req, res) {
 }
 
 
+const renderSearch = (req, res) => {
+  res.render("search");
+};
+
+// moviesWeb.controller.js
+
+const renderMovieDetail = async (req, res) => {
+  try {
+    const { title } = req.params;
+
+    let movies = await fetchFilm.fetchOneFilm(title);
+
+    if (!movies || movies.length === 0) {
+      return res.status(404).render("detalle", { movie: null, message: "Película no encontrada" });
+    }
+
+    // Como solo quieres 1 peli:
+    const movie = movies[0];
+
+    res.render("details", { movie });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render("detalle", { movie: null, message: "Error al cargar la película" });
+  }
+};
+
+
+
 module.exports = {
-  getAllMovies
+  getAllMovies,
+  renderSearch,
+  renderMovieDetail
 };
