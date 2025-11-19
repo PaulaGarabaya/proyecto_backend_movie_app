@@ -8,7 +8,7 @@ document.getElementById("searchButton").addEventListener("click", async () => {
     }
 
     try {
-        const res = await fetch(`/search/${encodeURIComponent(title)}`);
+        const res = await fetch(`/search/${title}`);
         const data = await res.json();
 
         // Si es un objeto (MongoDB) lo convertimos en array para unificar

@@ -5,7 +5,7 @@ const homeController = async (req, res) => {
     try {
         const movies = await Film.find();
         
-        res.render('home', {
+        res.render('search', {
             title: 'Movie App - Inicio',
             message: 'Bienvenido a nuestra aplicación de películas',
             movies: movies
@@ -45,5 +45,5 @@ const dashboardController = async (req, res) => {
 
 module.exports = {
     homeController,
-    dashboardController
+    dashboardController,
 };
