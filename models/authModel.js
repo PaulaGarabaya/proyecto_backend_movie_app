@@ -12,7 +12,15 @@ const createUser = async (name, email, role = 'user', password) => {
         }
         
         const hashedPassword = await bcrypt.hash(password, 10);
-        const result = await pool.query(queries.insertUser, [name, hashedPassword, email, role]);
+        
+        const result = await pool.query(queries.insertUser, [
+            name, 
+            '', // ????
+            email, 
+            hashedPassword,
+            role
+        ]);
+        
         return result.rows[0];
     } catch (error) {
         console.error('Error en createUser:', error.message);
@@ -63,7 +71,14 @@ const createGoogleUser = async (name, email, googleId, role = 'user') => {
             throw new Error('Nombre, email y Google ID son obligatorios');
         }
         
-        const result = await pool.query(queries.createGoogleUser, [name, null, email, role, 'google', googleId]);
+        const result = await pool.query(queries.createGoogleUser, [
+            name, 
+            null, // password null para Google
+            email, 
+            role, 
+            'google', // auth_method
+            googleId
+        ]);
         return result.rows[0];
     } catch (error) {
         console.error('Error en createGoogleUser:', error.message);
