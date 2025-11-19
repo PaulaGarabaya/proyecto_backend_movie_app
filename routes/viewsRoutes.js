@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/api/home', homeController);
 
 // [GET] http://localhost:3000/api/dashboard - Panel de control
-router.get('/api/dashboard', dashboardController);
+router.get('/dashboard', dashboardController);
 
 
 module.exports = router;
