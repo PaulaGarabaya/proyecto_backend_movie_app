@@ -1,6 +1,6 @@
 body, html {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #c4c4c4;
+    background-color: #dedede;
     margin: 0;
     padding: 0;
     display: flex;
@@ -17,6 +17,14 @@ header {
     padding: 10px 20px;
 }
 
+/* === NAVBAR === */
+nav {
+    display: flex; /* layout desktop */
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Lista de links */
 nav ul {
     display: flex;
     gap: 20px;
@@ -25,12 +33,14 @@ nav ul {
     padding: 0;
 }
 
+/* Items de la lista */
 nav li {
     display: inline-block;
 }
 
+/* Links */
 nav a {
-    color: #fff;
+    color: #ffff;
     text-decoration: none;
     font-size: 16px;
     padding: 8px 12px;
@@ -41,7 +51,14 @@ nav a {
 nav a:hover {
     background: #333;
 }
+/* Logo dentro de la navbar */
+.logo img {
+    height: 40px; /* ajusta al tamaño que quieras */
+    width: auto;
+}
 
+
+/* Botón de logout */
 .logout-button {
     background: none;
     border: none;
@@ -54,6 +71,16 @@ nav a:hover {
 }
 .logout-button:hover {
      background: #333;
+}
+
+/* === BOTÓN HAMBURGUESA === */
+.menu-toggle {
+    display: none; /* oculto por defecto en desktop */
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
 }
 
 /* === CONTENEDOR GENERAL === */
@@ -93,7 +120,7 @@ nav a:hover {
 }
 
 .tab-button.active {
-    background: #e50914; /* estilo tipo Netflix */
+    background: #e50914; 
 }
 
 /* === CONTENIDO DE LOS FORMULARIOS === */
@@ -192,7 +219,7 @@ h2 {
 }
 
 .btn-google:hover {
-    background: #e5e5e5;
+    background: #afafaf;
 }
 
 .btn-google img {
@@ -210,7 +237,7 @@ h2 {
 
 /* Tarjeta individual */
 .movie-card {
-    background: #ffffff;
+    background: #1a1a1a;;
     border-radius: 15px;
     padding: 15px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
@@ -219,7 +246,7 @@ h2 {
     flex-direction: column;
     align-items: center;
     text-align: center;
-
+    color: white;
     max-width: 250px; /* ancho máximo */
 }
 
@@ -244,7 +271,7 @@ h2 {
     display: inline-block;
     padding: 10px 15px;
     border-radius: 8px;
-    background: #ff6b6b;
+    background: #e50914;
     color: white;
     text-decoration: none;
     font-weight: bold;
@@ -252,7 +279,7 @@ h2 {
 }
 
 .btn-detalle:hover {
-    background: #ff4757;
+    background: #bb0810;
 }
 
 h1 {
@@ -260,6 +287,148 @@ h1 {
     position: relative;
     text-align: center;
 }
+
+/* === DETALLE DE PELÍCULA === */
+.movie-detail-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    color:white;
+}
+
+.detail-card {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    background: #1a1a1a;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    max-width: 900px;
+}
+
+.detail-card .left {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.detail-card .left img.poster {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.detail-card .left .add-fav {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #ff4c4c;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.detail-card .left .add-fav:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(255,76,76,0.4);
+}
+
+.detail-card .right {
+    flex: 2 1 500px;
+}
+
+.detail-card .right .data-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.detail-card .right .data-list li {
+    margin-bottom: 8px;
+}
+
+span.genre {
+    display: inline-block;
+    background: #333;
+    border-radius: 8px;
+    padding: 3px 8px;
+    margin: 2px;
+    font-size: 0.85rem;
+}
+
+span.rating {
+    background: #ff4c4c;
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+ul.cast li,
+ul.opinions li {
+    margin-bottom: 5px;
+}
+
+ul.opinions li {
+    padding-left: 10px;
+    border-left: 2px solid #ff4c4c;
+}
+
+.back-button {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 20px;
+    color: #ff4c4c;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.25s ease;
+}
+
+/* === RESPONSIVE PARA DETALLE DE PELÍCULA === */
+@media (max-width: 768px) {
+    .detail-card {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .detail-card .right {
+        flex: 1 1 100%;
+    }
+}
+
+
+
+/* Enlaces estilo botón */
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+}
+.btn-link {
+    display: inline-block;
+    padding: 12px 25px;
+    margin: 5px;
+    background-color: #e50914;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    text-align: center;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-link:hover {
+    background-color: #bb0810;
+    transform: translateY(-2px);
+}
+
 
 .search-container {
     display: flex;              /* Activa flexbox */
@@ -282,26 +451,27 @@ h1 {
     font-size: 1rem;
     border-radius: 8px;
     border: none;
-    background-color: #ff6b6b;
+    background-color: #e50914;
     color: #fff;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 .search-container button:hover {
-    background-color: #ff4757;
+    background-color: #bb0810;
 }
 
 footer {
     text-align: center;
     width: 100%;
-    background-color: #ff4757;
-    color: #000000;
+    background-color: #1a1a1a;
+    color: #ffffff;
     padding: 15px;
 }
 
-/* Responsivo: en pantallas pequeñas (<600px) mostrar en columna */
-@media (max-width: 600px) {
+/* === RESPONSIVO === */
+@media (max-width: 768px) {
+    /* Tarjetas de películas */
     .movie-container {
         flex-direction: column;
         align-items: center; /* centra las tarjetas */
@@ -311,4 +481,27 @@ footer {
         width: 90%; /* opcional: tarjetas más grandes y centradas */
         max-width: none;
     }
+
+    /* NAVBAR RESPONSIVO */
+    nav .nav-links {
+        display: none; /* ocultar links por defecto en móvil */
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* debajo del header */
+        right: 10px;
+        background-color: #111;
+        border-radius: 8px;
+        padding: 10px;
+        gap: 10px;
+    }
+
+    nav .nav-links.active {
+        display: flex; /* mostrar cuando se haga click en hamburguesa */
+    }
+
+    .menu-toggle {
+        display: block; /* mostrar botón hamburguesa en móvil */
+    }
 }
+
+

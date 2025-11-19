@@ -1,78 +1,66 @@
-doctype html
-html(lang="es")
-  head
-    meta(charset="UTF-8")
-    meta(http-equiv="X-UA-Compatible", content="IE=edge")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet", href="/css/style.css")
-    title= movie ? `${movie.title} - Detalle` : "Detalle de Película"
+extends dashboard
 
-  body
-    include ./header.pug
+block content
+  // Contenedor de detalle
+  .movie-detail-container
 
-    main.movie-detail-container
+    // Botón Volver
+    a.back-button(href="/search") ← Volver al buscador
 
-      // Botón Volver
-      a.back-button(href="/") ← Volver al buscador
+    if movie
+      .detail-card
+        .left
+          if movie.poster
+            img.poster(src=movie.poster, alt=`Poster de ${movie.title}`)
+          else
+            img.poster(src="/images/no-image.jpg", alt="Sin imagen")
 
-      if movie
-        .detail-layout
-
-          // Poster
-          .left
-            if movie.poster
-              img.poster(src=movie.poster, alt=`Poster de ${movie.title}`)
-            else
-              img.poster(src="/images/no-image.jpg", alt="Sin imagen")
-
-            // Botón Favoritos
+          if user
             form(method="POST", action=`/favorites/add/${movie.id}`)
-              button.add-fav(type="submit") Añadir a Favoritos
+              button.add-fav(type="submit") ❤️ Añadir a Favoritos
 
-          // Información principal
-          .right
-            h1.title= movie.title
+        .right
+          h2.title= movie.title
 
-            ul.data-list
-              li strong Año:  #{movie.year || "No disponible"}
-              li strong Director:  #{movie.director || "No disponible"}
-              li strong Género:
-                if movie.genres
-                  each g in movie.genres
-                    span.genre= g
-                else
-                  | No disponible
-              li strong Duración: #{movie.runtime || "No disponible"} min
-              li strong Rating: #{movie.rating || "Sin rating"}
+          ul.data-list
+            li Año: #{movie.year || "No disponible"}
+            li Director: #{movie.director || "No disponible"}
+            li Género:
+              if movie.genres && movie.genres.length
+                each g in movie.genres
+                  span.genre= g
+              else
+                | No disponible
+            li Duración: #{movie.runtime || "No disponible"} min
+            li Rating:
+              if movie.rating
+                span.rating= movie.rating
+              else if movie.ratings && movie.ratings.length
+                span.rating= movie.ratings.map(r => `${r.Source}: ${r.Value}`).join(", ")
+              else
+                | Sin rating
 
-            // Sinopsis
-            h2 Sinopsis
-            p.synopsis= movie.synopsis || "No hay sinopsis disponible."
+          h2 Sinopsis
+          p.synopsis= movie.plot || "No hay sinopsis disponible."
 
-            // Actores
-            if movie.cast && movie.cast.length
-              h2 Actores
-              ul.cast
-                each actor in movie.cast
-                  li= actor
+          if movie.actors && movie.actors.length
+            h2 Actores
+            ul.cast
+              each actor in movie.actors
+                li= actor
 
-            // Opiniones desde scraping
-            if movie.reviews
-              h2 Opiniones de espectadores (Scraping)
-              each sourceName, index in Object.keys(movie.reviews)
-                .review-source
-                  h3= sourceName
-                  ul
-                    each review in movie.reviews[sourceName]
-                      li.review-item
-                        p= review
-            else
-              h2 Opiniones
-              p No hay opiniones disponibles.
+          if movie.opinions && movie.opinions.length
+            h2 Opiniones de espectadores
+            ul.opinions
+              each op in movie.opinions
+                li= op.message || op
+          else
+            h2 Opiniones
+            p No hay opiniones disponibles.
 
-      else
-        h1 Película no encontrada
-        p Intenta una nueva búsqueda.
+    else
+      h1 Película no encontrada
+      p Intenta una nueva búsqueda.
 
-    include ./footer.pug
-    script(src="/js/movie-detail.js")
+  // Script específico para detalle
+  script(src="/js/movie-detail.js")
