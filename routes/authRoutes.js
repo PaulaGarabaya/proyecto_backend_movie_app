@@ -1,28 +1,31 @@
-// para el acceso al sistema
 const express = require('express');
 const router = express.Router();
-const userController = require("../controllers/auth.controller");
+const authController = require("../controllers/authController");
+const passport = require('passport');
 
-
-
-//------------- WEB -------------
-
-
-// -------------API--------------
 //[POST] http://localhost:3000/api/signup Registrar usuario en la aplicación
-router.post('/api/signup', userController.createUser);
+router.post('/api/signup', authController.createUser);
 
 //[POST] http://localhost:3000/api/login Hacer login en la aplicación
-router.post('/api/login', userController.logIn);
+router.post('/api/login', authController.logIn);
 
 //[POST] http://localhost:3000/api/logout Salir
-router.post('/api/logout', userController.logOut);
+router.post('/api/logout', authController.logOut);
 
 //[GET] http://localhost:3000/api/recoverpassword Recuperar password
-router.get('/api/recoverpassword', userController.recoverPassword);
+router.get('/api/recoverpassword', authController.recoverPassword);
 
 //[GET] http://localhost:3000/api/restorepassword Cambiar password
-// router.get('/api/restorepassword');
+router.get('/api/restorepassword', authController.restorePassword);
 
+//[GOOGLE OAUTH] Rutas de Google
+router.get('/auth/google', 
+    passport.authenticate('google', { scope: ['email', 'profile'] })
+);
+
+router.get('/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    authController.googleAuthCallback
+);
 
 module.exports = router;
