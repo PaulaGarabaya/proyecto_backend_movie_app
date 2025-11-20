@@ -12,6 +12,10 @@ block content
 
         label(for="email") Email:
         input(type="email" name="email" value=(user ? user.email : ''))
-
+        <label for="role">Rol:</label>
+            <select id="role" name="role">
+                <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>Usuario</option>
+                //- <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Administrador</option>
+            </select>
 
         button(type="submit") Guardar cambios 
