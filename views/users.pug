@@ -1,10 +1,8 @@
-doctype html
-html
-  head
+extends dashboard
+
+block title 
     title Usuarios
-  body
-    include ./header.pug
-    main 
+block content
     h1 Lista de usuarios
     ul
       each user in users
@@ -14,5 +12,3 @@ html
           form(action=`/api/user/${user.id}` method="POST")
             input(type="hidden" name="_method" value="DELETE")
             button(type="submit") Borrar
-    include ./footer.pug
-    script(src="/js/script.js")

@@ -1,7 +1,6 @@
 // controllers/userController.js
 
-const userModel = require('../models/userModel');
-
+const userService = require('../services/userServices');
 
 // GET /api/user
 const getUser = async (req, res) => {
@@ -32,7 +31,6 @@ const updateUser = async (req, res) => {
             return res.status(401).json({ error: "No autorizado" });
         }
 
-        // Sanitizar campos permitidos
         const allowedFields = ["name", "email", "avatar"];
         const newData = {};
 
@@ -78,7 +76,7 @@ const deleteUser = async (req, res) => {
 };
 
 
-// GET /profile
+// GET /profile (render de la vista)
 const renderProfile = async (req, res) => {
     try {
         if (!req.user) {
@@ -87,6 +85,7 @@ const renderProfile = async (req, res) => {
 
         const user = await userModel.getUserById(req.user.id);
 
+        // AQUÍ se usa tu vista profile.pug que extiende layout.pug
         res.status(200).render("profile", { user });
 
     } catch (error) {
@@ -113,11 +112,17 @@ const renderUsersList = async (req, res) => {
     }
 };
 
+const renderLogin = (req, res) => {
+    if (req.session.user) return res.redirect("/profile");
+    res.render("profile");
+};
 
 module.exports = {
     getUser,
     updateUser,
     deleteUser,
     renderProfile,
-    renderUsersList
+    renderUsersList,
+    renderLogin
 };
+

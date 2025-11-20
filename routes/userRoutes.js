@@ -8,6 +8,9 @@ const userController = require('../controllers/userController');
 //[GET] http://localhost:3000/profile 
 router.get('/profile', userController.renderProfile); // Vista del perfil
 
+//[GET] http://localhost:3000/login 
+router.get('/login', userController.renderProfile); 
+
 //[GET] http://localhost:3000/user
 router.get('/user', userController.renderUsersList); // Vista lista de usuarios (admin)
 
