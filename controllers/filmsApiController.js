@@ -1,7 +1,21 @@
 const Film = require('../models/films.model');
 require('dotenv').config();
 const fetchFilm = require('../utils/fetchFilms');
-// [GET] /api/movie/:title - Buscar película por título
+
+/**
+ * Busca una película por título en OMDB API y base de datos local
+ * @async
+ * @function getMovieByTitle
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.params - Parámetros de la ruta
+ * @param {string} req.params.title - Título de la película a buscar
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Retorna la película encontrada o error
+ * @throws {Error} Si hay un error en la consulta a la API o base de datos
+ * @example
+ * // GET /api/movie/Inception
+ * // Retorna la película "Inception" si existe
+ */
 async function getMovieByTitle(req, res) {
   const title = req.params.title;
   try {
@@ -24,7 +38,34 @@ async function getMovieByTitle(req, res) {
     });
   }
 }
-// [POST] /api/movie - Crear película (ADMIN)
+
+/**
+ * Crea una nueva película en la base de datos (solo administradores)
+ * @async
+ * @function createMovie
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.user - Usuario autenticado
+ * @param {string} req.user.role - Rol del usuario ('admin' requerido)
+ * @param {Object} req.body - Datos de la película a crear
+ * @param {string} req.body.Title - Título de la película
+ * @param {number} req.body.Year - Año de lanzamiento
+ * @param {string} req.body.Rated - Clasificación por edades
+ * @param {string} req.body.Released - Fecha de lanzamiento
+ * @param {string} req.body.Runtime - Duración
+ * @param {string} req.body.Genre - Género(s)
+ * @param {string} req.body.Director - Director(es)
+ * @param {string} req.body.Actors - Actores
+ * @param {string} req.body.Plot - Sinopsis
+ * @param {string} req.body.Poster - URL del póster
+ * @param {Array|string} req.body.Ratings - Calificaciones en formato array o JSON string
+ * @param {Array|string} req.body.Opinions - Opiniones en formato array o JSON string
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Retorna confirmación de creación o error
+ * @throws {Error} Si hay error de validación, duplicado o servidor
+ * @example
+ * // POST /api/movie
+ * // Body: { Title: "Nueva Película", Year: 2024, ... }
+ */
 async function createMovie(req, res) {
   try {
     // Verificar que el usuario es administrador
@@ -98,7 +139,35 @@ async function createMovie(req, res) {
     });
   }
 }
-// [PUT] /api/movie - Editar película (ADMIN)
+
+/**
+ * Actualiza una película existente en la base de datos (solo administradores)
+ * @async
+ * @function updateMovie
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.user - Usuario autenticado
+ * @param {string} req.user.role - Rol del usuario ('admin' requerido)
+ * @param {Object} req.body - Datos de la película a actualizar
+ * @param {string} req.body.id - ID de la película a actualizar
+ * @param {string} [req.body.Title] - Nuevo título de la película
+ * @param {number} [req.body.Year] - Nuevo año de lanzamiento
+ * @param {string} [req.body.Rated] - Nueva clasificación
+ * @param {string} [req.body.Released] - Nueva fecha de lanzamiento
+ * @param {string} [req.body.Runtime] - Nueva duración
+ * @param {string} [req.body.Genre] - Nuevo género
+ * @param {string} [req.body.Director] - Nuevo director
+ * @param {string} [req.body.Actors] - Nuevos actores
+ * @param {string} [req.body.Plot] - Nueva sinopsis
+ * @param {string} [req.body.Poster] - Nueva URL del póster
+ * @param {Array} [req.body.Ratings] - Nuevas calificaciones
+ * @param {Array} [req.body.Opinions] - Nuevas opiniones
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Retorna confirmación de actualización o error
+ * @throws {Error} Si hay error de validación, no encontrado o servidor
+ * @example
+ * // PUT /api/movie
+ * // Body: { id: "12345", Title: "Título Actualizado", Year: 2024 }
+ */
 async function updateMovie(req, res) {
   try {
     // Verificar que el usuario es administrador
@@ -175,7 +244,23 @@ async function updateMovie(req, res) {
     });
   }
 }
-// [DELETE] /api/movie/:title - Eliminar película (ADMIN)
+
+/**
+ * Elimina una película de la base de datos por título (solo administradores)
+ * @async
+ * @function deleteMovie
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.user - Usuario autenticado
+ * @param {string} req.user.role - Rol del usuario ('admin' requerido)
+ * @param {Object} req.params - Parámetros de la ruta
+ * @param {string} req.params.title - Título de la película a eliminar
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Retorna confirmación de eliminación o error
+ * @throws {Error} Si hay error de base de datos o servidor
+ * @example
+ * // DELETE /api/movie/Inception
+ * // Elimina la película "Inception" si existe
+ */
 async function deleteMovie(req, res) {
   try {
     // Verificar que el usuario es administrador
@@ -205,6 +290,7 @@ async function deleteMovie(req, res) {
     });
   }
 }
+
 module.exports = {
   getMovieByTitle,
   createMovie,

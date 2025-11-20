@@ -2,9 +2,29 @@ const authModel = require('../models/authModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+/**
+ * Almacén temporal en memoria para tokens de recuperación de contraseña
+ * @type {Object}
+ * @property {Object} resetTokens - Tokens activos con estructura { token: { email: string, expires: number } }
+ */
 const resetTokens = {};
 
-//[POST] http://localhost:3000/api/signup
+/**
+ * Crea un nuevo usuario en el sistema
+ * @async
+ * @function createUser
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.body - Cuerpo de la petición
+ * @param {string} req.body.username - Nombre de usuario único
+ * @param {string} req.body.password - Contraseña del usuario
+ * @param {string} req.body.email - Correo electrónico del usuario
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Redirecciona a /login en éxito, error en caso contrario
+ * @throws {Error} Cuando faltan campos obligatorios o hay error en la base de datos
+ * @example
+ * // POST /api/signup
+ * // Body: { username: "usuario", password: "123456", email: "usuario@ejemplo.com" }
+ */
 async function createUser(req, res) {
     const { username, password, email } = req.body;
     
@@ -20,7 +40,21 @@ async function createUser(req, res) {
     }
 }
 
-//[POST] http://localhost:3000/api/login
+/**
+ * Autentica un usuario y genera token JWT
+ * @async
+ * @function logIn
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.body - Cuerpo de la petición
+ * @param {string} req.body.username - Nombre de usuario
+ * @param {string} req.body.password - Contraseña del usuario
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Redirecciona a /dashboard en éxito, error en credenciales inválidas
+ * @throws {Error} Cuando hay error en la base de datos o comparación de contraseñas
+ * @example
+ * // POST /api/login
+ * // Body: { username: "usuario", password: "123456" }
+ */
 async function logIn(req, res) {
     const { username, password } = req.body;
     try {
@@ -37,13 +71,35 @@ async function logIn(req, res) {
     }
 }
 
-//[POST] http://localhost:3000/api/logout
+/**
+ * Cierra la sesión del usuario eliminando el token JWT
+ * @async
+ * @function logOut
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Redirecciona a /login después de eliminar la cookie
+ * @example
+ * // POST /api/logout
+ */
 async function logOut(req, res) {
     res.clearCookie('token');
     res.redirect('/login');
 }
 
-//[GET] http://localhost:3000/api/recoverpassword
+/**
+ * Inicia el proceso de recuperación de contraseña generando un token temporal
+ * @async
+ * @function recoverPassword
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.body - Cuerpo de la petición
+ * @param {string} req.body.email - Correo electrónico del usuario
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Mensaje de confirmación (siempre retorna éxito por seguridad)
+ * @throws {Error} Cuando hay error en la base de datos
+ * @example
+ * // GET /api/recoverpassword
+ * // Body: { email: "usuario@ejemplo.com" }
+ */
 async function recoverPassword(req, res) {
     const { email } = req.body;
     
@@ -62,7 +118,21 @@ async function recoverPassword(req, res) {
     }
 }
 
-//[GET] http://localhost:3000/api/restorepassword
+/**
+ * Restablece la contraseña usando un token de recuperación válido
+ * @async
+ * @function restorePassword
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.body - Cuerpo de la petición
+ * @param {string} req.body.token - Token de recuperación recibido por email
+ * @param {string} req.body.newPassword - Nueva contraseña
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Mensaje de éxito o error si el token es inválido
+ * @throws {Error} Cuando hay error en el servidor
+ * @example
+ * // GET /api/restorepassword
+ * // Body: { token: "abc123", newPassword: "nueva123" }
+ */
 async function restorePassword(req, res) {
     const { token, newPassword } = req.body;
     
@@ -84,7 +154,20 @@ async function restorePassword(req, res) {
     }
 }
 
-//[GOOGLE OAUTH] Callback de Google
+/**
+ * Maneja el callback de autenticación con Google OAuth
+ * @async
+ * @function googleAuthCallback
+ * @param {Object} req - Objeto de petición de Express
+ * @param {Object} req.user - Usuario autenticado por Google
+ * @param {Object} req.user.user - Datos del usuario de Google
+ * @param {string} req.user.token - Token JWT generado
+ * @param {Object} res - Objeto de respuesta de Express
+ * @returns {Promise<void>} Redirecciona a /dashboard en éxito, a /login en error
+ * @throws {Error} Cuando hay error en el proceso de autenticación con Google
+ * @example
+ * // Ruta interna de callback de Google OAuth
+ */
 async function googleAuthCallback(req, res) {
     try {
         const { user, token } = req.user;
@@ -110,92 +193,3 @@ module.exports = {
     restorePassword,
     googleAuthCallback
 };
-
-
-// const authModel = require("../models/authModels");
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcryptjs');
-
-// // POST http://localhost:3000/api/signup
-// const createUser = async (req, res) => {
-//     try {
-//         const { name, surname, email, password, role = "user" } = req.body;
-//         console.log("BODY RECIBIDO:", req.body);
-//         if(!name || !surname || !email || !password || !role) {
-//             return res.status(400).json({ message: "Faltan campos por rellenar"});
-//         }
-
-//         const newUser = await authModel.createUser(name, surname, email, password, role);
-//         console.log("USUARIO CREADO:", newUser);
-//         res.status(201).json({
-//             message: "Usuario creado correctamente",
-//             user: newUser
-//         })
-//     } catch (error) {
-//         res.status(500).json({ message: "Error en el servidor", error});
-//     }
-// }
-
-// // POST http://localhost:3000/api/login
-// const logIn = async (req, res) => {
-//     const { name, email, password } = req.body;
-//     try {
-
-//         if(!name || !email || !password) {
-//             return res.status(400).json({ message: "Faltan campos por rellenar"});
-//         }
-//         const userLogin = await authModel.logInModel(name, email, password);
-//             res.status(201).json({
-//             message: "Login correcto",
-//             user: userLogin
-//         })
-//     } catch (error) {
-//         res.status(500).json({ message: "Error en el servidor", error});
-//     }
-// }
-
-// const logOut = async (req, res) => {
-//     const { email, password } = req.body;
-//     try {
-//             if(!email || !password) {
-//             return res.status(400).json({ message: "Faltan campos por rellenar"});
-//             }
-
-//             const userLogout = await authModel.logOutModel(email, password);
-//             res.status(201).json({
-//             message: "Logout correcto",
-//             email: userLogout.email,
-//             password: userLogout.password
-//             })
-//     } catch (error) {
-//         res.status(500).json({ message: "Error en el servidor", error});
-//     }
-// }
-
-// const recoverPassword = async (req, res) => {
-//     try {
-//         const { email } = req.body;
-
-//         if(!email) {
-//             return res.status(400).json({ message: "Faltan campos por rellenar"});
-//         }
-
-//         const userRecoverPassword = await authModel.getUserModel(email);
-//             res.status(201).json({
-//             message: "Contraseña:",
-//             id: userRecoverPassword.id,
-//             email: userRecoverPassword.email,
-//             password: userRecoverPassword.password
-//             })
-//     } catch (error) {
-//         res.status(500).json({ message: "Error en el servidor", error});
-//     }
-// }
-
-// module.exports = {
-//     createUser,
-//     logIn,
-//     logOut,
-//     recoverPassword
-// }
-
