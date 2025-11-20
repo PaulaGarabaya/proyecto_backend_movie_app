@@ -1,6 +1,4 @@
-const authModel = require('../models/authModel');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const authService = require('../services/authServices');
 
 /**
  * Almacén temporal en memoria para tokens de recuperación de contraseña
@@ -26,17 +24,11 @@ const resetTokens = {};
  * // Body: { username: "usuario", password: "123456", email: "usuario@ejemplo.com" }
  */
 async function createUser(req, res) {
-    const { username, password, email } = req.body;
-    
     try {
-        if (!username || !password || !email) {            
-            return res.status(400).send('Todos los campos son obligatorios');
-        }
-        const newUser = await authModel.createUser(username, email, 'user', password);
+        await authService.createUser(req.body.username, req.body.email, req.body.password);
         res.redirect('/login');
     } catch (error) {
-        console.error('Error en el registro:', error);
-        res.status(500).send('Error en el registro');
+        res.status(error.status || 500).send(error.message);
     }
 }
 
@@ -56,18 +48,12 @@ async function createUser(req, res) {
  * // Body: { username: "usuario", password: "123456" }
  */
 async function logIn(req, res) {
-    const { username, password } = req.body;
     try {
-        const user = await authModel.findUserByUsername(username);
-        if (user && await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.cookie('token', token, { httpOnly: true });
-            res.redirect('/dashboard');
-        } else {
-            res.status(401).send('Credenciales inválidas');
-        }
+        const { user, token } = await authService.logIn(req.body.username, req.body.password);
+        res.cookie('token', token, { httpOnly: true });
+        res.redirect('/dashboard');
     } catch (error) {
-        res.status(500).send('Error en el login');
+        res.status(error.status || 500).send(error.message);
     }
 }
 
@@ -82,6 +68,7 @@ async function logIn(req, res) {
  * // POST /api/logout
  */
 async function logOut(req, res) {
+    authService.logOut();
     res.clearCookie('token');
     res.redirect('/login');
 }
@@ -101,18 +88,9 @@ async function logOut(req, res) {
  * // Body: { email: "usuario@ejemplo.com" }
  */
 async function recoverPassword(req, res) {
-    const { email } = req.body;
-    
     try {
-        const user = await authModel.findUserByEmail(email);
-        if (user) {
-            const token = Math.random().toString(36).substring(2, 15);
-            resetTokens[token] = { email, expires: Date.now() + 3600000 };
-            console.log(`Token de recuperación para ${email}: ${token}`);
-        }
-        
+        await authService.recoverPassword(req.body.email);
         res.json({ message: 'Si el email existe, recibirás un enlace de recuperación' });
-        
     } catch (error) {
         res.status(500).json({ error: 'Error del servidor' });
     }
@@ -134,23 +112,11 @@ async function recoverPassword(req, res) {
  * // Body: { token: "abc123", newPassword: "nueva123" }
  */
 async function restorePassword(req, res) {
-    const { token, newPassword } = req.body;
-    
     try {
-        const tokenData = resetTokens[token];
-        
-        if (!tokenData || Date.now() > tokenData.expires) {
-            return res.status(400).json({ error: 'Token inválido o expirado' });
-        }
-
-        console.log(`Nueva contraseña para ${tokenData.email}: ${newPassword}`);
-        
-        delete resetTokens[token];
-        
+        await authService.restorePassword(req.body.token, req.body.newPassword);
         res.json({ message: 'Contraseña restablecida exitosamente' });
-        
     } catch (error) {
-        res.status(500).json({ error: 'Error del servidor' });
+        res.status(error.status || 500).json({ error: error.message });
     }
 }
 
@@ -170,26 +136,20 @@ async function restorePassword(req, res) {
  */
 async function googleAuthCallback(req, res) {
     try {
-        const { user, token } = req.user;
-        
-        res.cookie('token', token, { 
-            httpOnly: true, 
-            maxAge: 60 * 60 * 1000 
-        });
-        
+        const { user, token } = await authService.googleAuthCallback(req.user);
+        res.cookie('token', token, { httpOnly: true, maxAge: 60 * 60 * 1000 });
         res.redirect('/dashboard');
-        
     } catch (error) {
-        console.error('Error en Google callback:', error);
+        console.error(error);
         res.redirect('/login?error=google_auth_failed');
     }
 }
 
-module.exports = { 
-    createUser, 
-    logIn, 
-    logOut, 
-    recoverPassword, 
+module.exports = {
+    createUser,
+    logIn,
+    logOut,
+    recoverPassword,
     restorePassword,
     googleAuthCallback
 };
