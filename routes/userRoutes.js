@@ -23,4 +23,7 @@ router.put('/api/user', userController.updateUser); // Editar perfil
 //[DELETE] http://localhost:3000/api/user Borrar un usuario de la base de datos (admin)
 router.delete('/api/user/:id', userController.deleteUser);
 
+// Ruta para actualizar el perfil del usuario
+router.post('/api/user', userController.updateUserProfile);
+
 module.exports = router;
